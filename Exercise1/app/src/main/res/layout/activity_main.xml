@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/game_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_light">
+
+    <!-- Bird Character -->
+    <ImageView
+        android:id="@+id/bird"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="50dp"
+        android:src="@drawable/my_profile_picture" />
+
+    <!-- Top Pipe -->
+    <View
+        android:id="@+id/pipe_top"
+        android:layout_width="80dp"
+        android:layout_height="300dp"
+        android:layout_gravity="end"
+        android:background="@android:color/holo_green_dark" />
+
+    <!-- Bottom Pipe -->
+    <View
+        android:id="@+id/pipe_bottom"
+        android:layout_width="80dp"
+        android:layout_height="300dp"
+        android:layout_gravity="end|bottom"
+        android:background="@android:color/holo_green_dark" />
+
+    <!-- Score Display -->
+    <TextView
+        android:id="@+id/score_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="50dp"
+        android:text="Score: 0"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+</FrameLayout>
