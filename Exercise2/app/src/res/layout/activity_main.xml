@@ -5,43 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingHorizontal="24dp"
-    android:paddingTop="50dp"
-    android:paddingBottom="24dp"
-    android:background="#FFFFFF"
+    android:padding="16dp"
+    android:paddingTop="100dp"
     tools:context=".MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Target Language:"
-        android:textStyle="bold"
-        android:textColor="#333333"
-        android:textSize="16sp" />
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/spinnerLanguage"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:drawable/btn_dropdown" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
 
     <Button
         android:id="@+id/btnRecord"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Start Recording"
-        android:textSize="16sp" />
+        android:text="Start Recording" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Original Text (Press Enter to translate):"
-        android:textStyle="bold"
-        android:textColor="#333333"
-        android:textSize="16sp" />
+        android:text="Original Text:"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/tvOriginal"
@@ -49,23 +41,19 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:background="#F5F5F5"
+        android:background="#F0F0F0"
         android:gravity="top"
-        android:padding="12dp"
+        android:padding="8dp"
         android:hint="Speak or type text here..."
-        android:inputType="text"
-        android:imeOptions="actionDone"
-        android:textColor="#000000"
-        android:textSize="16sp" />
+        android:inputType="textMultiLine"
+        android:imeOptions="actionDone" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="Translated Text:"
-        android:textStyle="bold"
-        android:textColor="#333333"
-        android:textSize="16sp" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvTranslated"
@@ -75,9 +63,7 @@
         android:layout_weight="1"
         android:background="#E8F5E9"
         android:gravity="top"
-        android:padding="12dp"
-        android:text="Translation will appear here..."
-        android:textColor="#2E7D32"
-        android:textSize="16sp" />
+        android:padding="8dp"
+        android:text="Translation will appear here..." />
 
 </LinearLayout>
