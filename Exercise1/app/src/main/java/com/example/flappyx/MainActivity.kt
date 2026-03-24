@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import kotlin.math.abs
+import java.util.Random
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,18 +24,22 @@ class MainActivity : AppCompatActivity() {
     private val jumpStrength = -25f
     
     private var pipeX = 0f
-    private val pipeSpeed = 10f
+    private val pipeSpeed = 12f
     private var score = 0
     private var isGameOver = false
+    private val gapSize = 800 // Khoảng trống rộng giúp AI dễ điều khiển
+
+    private val random = Random()
 
     private val handler = Handler(Looper.getMainLooper())
     private val gameLoop = object : Runnable {
         override fun run() {
             if (!isGameOver) {
+                runAI() // AI tự động tính toán nhảy mỗi khung hình
                 updateBird()
                 updatePipes()
                 checkCollision()
-                handler.postDelayed(this, 20) // ~50 FPS
+                handler.postDelayed(this, 20)
             }
         }
     }
@@ -50,18 +54,28 @@ class MainActivity : AppCompatActivity() {
         scoreText = findViewById(R.id.score_text)
         gameLayout = findViewById(R.id.game_layout)
 
+        // Game tự động chơi, click chỉ để restart khi thua
         gameLayout.setOnClickListener {
             if (isGameOver) {
                 resetGame()
-            } else {
-                velocity = jumpStrength
             }
         }
 
-        // Initialize pipe position to the right of the screen
         gameLayout.post {
-            pipeX = gameLayout.width.toFloat()
             resetGame()
+        }
+    }
+
+    private fun runAI() {
+        // Tọa độ Y tâm của con chim
+        val birdCenterY = bird.y + (bird.height / 2f)
+        
+        // Tọa độ Y tâm của khe hở (bắt đầu từ đáy ống trên)
+        val gapCenterY = pipeTop.height.toFloat() + (gapSize / 2f)
+
+        // Nếu chim rơi xuống thấp hơn tâm khe hở, AI sẽ ra lệnh nhảy
+        if (birdCenterY > gapCenterY) {
+            velocity = jumpStrength
         }
     }
 
@@ -70,7 +84,6 @@ class MainActivity : AppCompatActivity() {
         birdY += velocity
         bird.translationY = birdY
 
-        // Basic boundary check (top and bottom)
         if (bird.y < 0 || bird.y + bird.height > gameLayout.height) {
             gameOver()
         }
@@ -82,14 +95,35 @@ class MainActivity : AppCompatActivity() {
             pipeX = gameLayout.width.toFloat()
             score++
             scoreText.text = "Score: $score"
-            // Optionally randomize pipe heights here
+            randomizePipes()
         }
         pipeTop.translationX = pipeX - gameLayout.width + pipeTop.width
         pipeBottom.translationX = pipeX - gameLayout.width + pipeBottom.width
     }
 
+    private fun randomizePipes() {
+        val totalHeight = gameLayout.height
+        if (totalHeight <= 0) return
+
+        val minPipeHeight = 100
+        val maxTopPipeHeight = totalHeight - gapSize - minPipeHeight
+        
+        val topHeight = if (maxTopPipeHeight > minPipeHeight) {
+            random.nextInt(maxTopPipeHeight - minPipeHeight) + minPipeHeight
+        } else {
+            minPipeHeight
+        }
+        
+        val topParams = pipeTop.layoutParams
+        topParams.height = topHeight
+        pipeTop.layoutParams = topParams
+        
+        val bottomParams = pipeBottom.layoutParams
+        bottomParams.height = totalHeight - topHeight - gapSize
+        pipeBottom.layoutParams = bottomParams
+    }
+
     private fun checkCollision() {
-        // Simple AABB collision detection
         if (isViewOverlapping(bird, pipeTop) || isViewOverlapping(bird, pipeBottom)) {
             gameOver()
         }
@@ -116,18 +150,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun gameOver() {
         isGameOver = true
-        scoreText.text = "Game Over! Score: $score\nTap to Restart"
+        scoreText.text = "AI Failed! Score: $score\nTap to Restart"
         handler.removeCallbacks(gameLoop)
     }
 
     private fun resetGame() {
         isGameOver = false
         score = 0
-        scoreText.text = "Score: 0"
+        scoreText.text = "AI Playing..."
         birdY = 0f
         velocity = 0f
         pipeX = gameLayout.width.toFloat()
         bird.translationY = 0f
+        randomizePipes()
         handler.post(gameLoop)
     }
 }
