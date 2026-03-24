@@ -6,9 +6,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
-// Đọc API Key từ gradle.properties ở root project
+// Đọc API Key từ local.properties
 val properties = Properties()
-val propertiesFile = project.rootProject.file("gradle.properties")
+val propertiesFile = project.rootProject.file("local.properties")
 if (propertiesFile.exists()) {
     properties.load(FileInputStream(propertiesFile))
 }
